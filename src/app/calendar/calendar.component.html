@@ -1,0 +1,32 @@
+<div class="calendar-container">
+    <!-- Navigation -->
+    <div class="calendar-header">
+      <button class="month-change-button left" (click)="previousMonth()">
+        &#8592;
+        {{ getMonthName(currentDate.getMonth() - 1) }}
+      </button>
+      <span class="current-month">{{ currentMonthYear }}</span>
+      <button class="month-change-button right" (click)="nextMonth()">
+        {{ getMonthName(currentDate.getMonth() + 1) }}
+        &#8594;
+      </button>
+    </div>
+  
+    <!-- Tage im Kachelformat -->
+    <div class="calendar-grid">
+      <div *ngFor="let day of calendarDays" class="calendar-tile" [class.empty]="!day.day" [class.weekend]="day.weekday === 'Sa' || day.weekday === 'So'">
+        <span *ngIf="day.day" class="weekday">{{ day.weekday }},</span>
+        <span *ngIf="day.day" class="date">{{ day.day }}</span>
+        <button *ngIf="day.day" class="add-note-button" (click)="addNote(day.day!)">+</button>
+  
+        <!-- Notizen für den aktuellen Tag, Monat und Jahr -->
+        <ul *ngIf="day.day && notes[currentDate.getFullYear()] && notes[currentDate.getFullYear()][currentDate.getMonth()] && notes[currentDate.getFullYear()][currentDate.getMonth()][day.day]">
+          <li *ngFor="let note of notes[currentDate.getFullYear()][currentDate.getMonth()][day.day]; let i = index">
+            {{ note }}
+            <button class="delete-note-button" (click)="deleteNote(day.day!, i)">✖</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
